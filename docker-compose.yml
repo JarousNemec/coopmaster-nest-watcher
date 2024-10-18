@@ -1,0 +1,7 @@
+services:
+  coop_nest_watcher:
+    build:
+      context: .
+    restart: always
+    ports:
+      - "9007:9007"
