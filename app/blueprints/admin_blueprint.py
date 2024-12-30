@@ -1,16 +1,11 @@
-import json
-import logging
-from datetime import datetime
+from flask import Blueprint, make_response
 
-from flask import Blueprint, request, jsonify, make_response
-
-from app.configuration import AppConfig
-from app.service.fajne_schema.fajne_schema_creator import CoopMasterDBCreator
+from app.service.nest_watcher_schema.nest_watcher_schema_creator import CoopMasterDBCreator
 
 admin_blueprint = Blueprint('admin_blueprint', __name__)
 
-
 from app import configuration
+
 
 @admin_blueprint.route("/api/db/recreate", methods=['GET'])
 def recreate_database():
@@ -34,7 +29,6 @@ def get_schema_version():
     return make_response(response)
 
 
-
 @admin_blueprint.route("/api/record/count", methods=['GET'])
 def get_nest_record_count():
     nest_db = configuration.get_nest_db()
@@ -42,11 +36,3 @@ def get_nest_record_count():
     response = {"count": count}
 
     return make_response(response)
-
-
-
-
-
-
-
-

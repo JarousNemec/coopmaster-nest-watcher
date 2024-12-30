@@ -3,7 +3,7 @@ import logging
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.service.fajne_schema.fajne_schema import create_fajne_db_schema, insert_schema_version
+from app.service.nest_watcher_schema.nest_watcher_schema import create_nest_watcher_db_schema, insert_schema_version
 
 
 class CoopMasterDBCreator:
@@ -13,7 +13,7 @@ class CoopMasterDBCreator:
         try:
             engine = create_engine(f'postgresql+psycopg://{user}:{password}@{host}:{port}/{database}')
             session = sessionmaker(bind=engine)
-            create_fajne_db_schema(engine, session())
+            create_nest_watcher_db_schema(engine, session())
             insert_schema_version(session())
             logging.info("Schema CoopMasterDBCreator created  ")
         except Exception as e:

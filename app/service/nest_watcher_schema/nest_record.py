@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, INTEGER, DateTime, Integer
+from sqlalchemy import Column, String, INTEGER, Integer, TIMESTAMP
 
 from app.service.common_schema.database import FajneBase
 
@@ -9,7 +9,7 @@ class NestRecord(FajneBase):
     id = Column(Integer, primary_key=True)
     nest_id = Column('nest_id', String)
     weight = Column('weight', INTEGER)
-    timestamp = Column('timestamp', String)
+    timestamp = Column('timestamp', TIMESTAMP)
 
     def json(self):
         content = {

@@ -6,9 +6,9 @@ from sqlalchemy import text
 
 
 from app.service.common_schema.database import FajneBase
-from app.service.fajne_schema.information_schema import InformationSchema
-from app.service.fajne_schema.nest_record import NestRecord
-from app.service.fajne_schema.sell import Sell
+from app.service.nest_watcher_schema.information_schema import InformationSchema
+from app.service.nest_watcher_schema.nest_record import NestRecord
+from app.service.nest_watcher_schema.sell import Sell
 
 
 def create_information_schema_table(engine, db_session):
@@ -37,7 +37,7 @@ def create_nest_record_table(engine, db_session):
         pass
 
 
-def create_fajne_db_schema(engine, db_session):
+def create_nest_watcher_db_schema(engine, db_session):
     with db_session as conn:
         conn.execute(text("DROP SCHEMA public CASCADE;"))
         conn.execute(text("CREATE SCHEMA public;"))

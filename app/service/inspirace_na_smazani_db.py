@@ -6,9 +6,10 @@ from datetime import datetime, timedelta
 from sqlalchemy import create_engine, MetaData, func
 from sqlalchemy.orm import sessionmaker
 
-from app.service.fajne_schema.fajne_schema_creator import CoopMasterDBCreator
-from app.service.fajne_schema.information_schema import InformationSchema
-from app.service.fajne_schema.sell import Sell
+
+from app.service.nest_watcher_schema.information_schema import InformationSchema
+from app.service.nest_watcher_schema.nest_watcher_schema_creator import CoopMasterDBCreator
+from app.service.nest_watcher_schema.sell import Sell
 
 
 class FajneSellDB:

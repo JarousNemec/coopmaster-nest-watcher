@@ -1,3 +1,5 @@
+import logging
+
 import paho.mqtt.client as mqtt
 
 class NestMQTTClient:
@@ -14,17 +16,15 @@ class NestMQTTClient:
         self.mqtt_client.connect(self.broker, self.port, 60)
         self.mqtt_client.loop_start()
 
+    def publish(self, topic, payload):
+        return self.mqtt_client.publish(topic, payload)
+
     def on_connect(self, client, userdata, flags, rc):
-        if rc == 0:
-            print("Úspěšně připojeno k brokeru")
-            # Přihlášení k odběru tématu
-            client.subscribe("test/tema")
-        else:
-            print("Připojení selhalo, kód výsledku: ", rc)
+        pass
 
     # Definice callback funkce při přijetí zprávy
     def on_message(self, client, userdata, msg):
-        print(f"Přijatá zpráva z {msg.topic}: {msg.payload.decode()}")
+        pass
 
 
 

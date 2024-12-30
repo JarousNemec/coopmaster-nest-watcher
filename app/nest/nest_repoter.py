@@ -3,6 +3,7 @@ import logging
 
 from app import configuration
 
+
 def report_nest_data():
     count = configuration.get_nest_db().get_nest_record_count()
 
@@ -22,6 +23,6 @@ def report_nest_data():
     # Check if the message was successfully published
     status = result[0]
     if status == 0:
-        print("ok")
+        logging.info("Nest status reported successfully")
     else:
-        print("failed")
+        logging.error(f"Nest status reported with error {status}")
