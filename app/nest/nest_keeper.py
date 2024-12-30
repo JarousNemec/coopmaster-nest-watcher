@@ -5,26 +5,7 @@ import logging
 
 from app import configuration
 
-NEST_TO_KEEP = [
-    {
-        "name": "nest_1",
-        "ip": "192.168.1.92",
-        "port": 9004,
-        "enabled": True
-    },
-    {
-        "name": "nest_2",
-        "ip": "192.168.1.92",
-        "port": 9004,
-        "enabled": False
-    },
-    {
-        "name": "nest_3",
-        "ip": "192.168.1.92",
-        "port": 9004,
-        "enabled": False
-    }
-]
+NEST_TO_KEEP = configuration.construct_nests_from_env()
 
 
 def parse_values(input_str):
@@ -71,7 +52,5 @@ def keep_all_nests():
 
         except requests.exceptions.RequestException as e:
             logging.error(f'An error occurred: {e}')
-
-
 
     logging.info("All nests checked.")

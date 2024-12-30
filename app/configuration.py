@@ -76,6 +76,33 @@ class AppConfig:
 config = AppConfig(os.environ)
 
 
+def construct_nests_from_env():
+    nests = []
+    # Iterate through environment variables to collect nest data
+    for i in range(1, 7):  # Assuming you have six nests
+        name = f"NEST_{i}"
+        ip = os.getenv(f"{name}_IP")
+        port = os.getenv(f"{name}_PORT")
+        enabled = os.getenv(f"{name}_ENABLED")
+
+        # Construct each nest's dictionary
+        if ip and port and enabled is not None:
+            nests.append({
+                "name": f"nest_{i}",
+                "ip": ip,
+                "port": int(port),
+                "enabled": enabled.upper() == 'TRUE'
+            })
+
+    return nests
+
+# Use the function
+nests = construct_nests_from_env()
+
+# Print out the nests to verify
+print(nests)
+
+
 def get_mqtt_client():
     return NestMQTTClient(
         config.MQTT_BROKER,
