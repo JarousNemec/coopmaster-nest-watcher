@@ -1,9 +1,14 @@
 import logging
 
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask
 from waitress import serve
 
 from app import configuration
+from app.blueprints.admin_blueprint import admin_blueprint
+from app.blueprints.weight_blueprint import weight_blueprint
+from app.nest.nest_keeper import keep_all_nests
+from app.nest.nest_repoter import report_nest_data
 
 
 def flask_app():
@@ -11,13 +16,25 @@ def flask_app():
 
     @app.route("/")
     def hello_world():
-        logging.info("Hello World!")
-        return configuration.hello_message
+        message = "CoopMaster Nest Watcher!"
+        logging.info(message)
+        return message
 
+    app.register_blueprint(weight_blueprint)
+    app.register_blueprint(admin_blueprint)
     return app
 
-def server(host: str = "127.0.0.1", port: int = 80, ssl: bool = False):
+
+def server():
     manager_app = flask_app()
 
-    logging.info("Serving on http://"+configuration.host+":"+str(port))
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(report_nest_data, 'interval', seconds=configuration.config.REPORT_INTERVAL)
+    scheduler.add_job(keep_all_nests, 'interval', seconds=configuration.config.REPORT_INTERVAL)
+    scheduler.start()
+
+    port = configuration.config.PORT
+    host = configuration.config.HOST
+    logging.info(f"Serving on http://{host}:{port}")
+    logging.info(f"Recreate db on http://{host}:{port}/api/db/recreate")
     serve(manager_app,  port=port)

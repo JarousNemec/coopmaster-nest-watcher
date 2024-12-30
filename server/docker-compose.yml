@@ -1,0 +1,34 @@
+services:
+  coop_nest_watcher:
+    build:
+      context: ..
+    restart: always
+    ports:
+      - "9007:9007"
+
+
+  coop-solution-db:
+    image: postgres:15
+    container_name:  coop-solution-db
+    healthcheck:
+      test: ["CMD-SHELL", "/usr/bin/pg_isready -h localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - DB_POSTGRES_EXTRA_CONFIG=shared_preload_libraries=pg_stat_statements
+    ports:
+      - "${DB_PORT}:5432" # Port for remote accessing the database
+    networks:
+      - coopmaster
+    volumes:
+      - ./postgres_backup:/storage/backup
+      - ./postgres_data:/storage/data
+
+networks:
+  coopmaster:
+    name: coopmaster
