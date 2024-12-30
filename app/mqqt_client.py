@@ -26,6 +26,8 @@ class NestMQTTClient:
     def on_message(self, client, userdata, msg):
         pass
 
+    def close(self):
+        self.mqtt_client.disconnect()
 
 
 

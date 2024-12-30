@@ -30,9 +30,7 @@ def keep_all_nests():
             logging.info(f"NestKeeper is keeping {name}")
 
             if not enabled:
-                # TODO remove in production
-                logging.info(f"Nest check is disabled: {name}. Random data will be generated and persited to Database")
-                nest_db.insert_nest_record(nest_id=name, weight=randrange(10000))
+                nest_db.insert_nest_record(nest_id=name, weight=-1)
                 continue
 
             url = f'http://{ip}:{port}/api/weight'

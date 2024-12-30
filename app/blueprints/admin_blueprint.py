@@ -22,17 +22,22 @@ def recreate_database():
 @admin_blueprint.route("/api/db/version", methods=['GET'])
 def get_schema_version():
     nest_db = configuration.get_nest_db()
-    version = nest_db.get_schema_version()
+    try:
+        version = nest_db.get_schema_version()
 
-    response = {"state": version}
+        response = {"state": version}
 
-    return make_response(response)
-
+        return make_response(response)
+    finally:
+        nest_db.close()
 
 @admin_blueprint.route("/api/record/count", methods=['GET'])
 def get_nest_record_count():
     nest_db = configuration.get_nest_db()
-    count = nest_db.get_nest_record_count()
-    response = {"count": count}
+    try:
+        count = nest_db.get_nest_record_count()
+        response = {"count": count}
 
-    return make_response(response)
+        return make_response(response)
+    finally:
+        nest_db.close()
