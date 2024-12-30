@@ -8,19 +8,19 @@ from app import configuration
 NEST_TO_KEEP = [
     {
         "name": "nest_1",
-        "ip": "127.0.0.1",
+        "ip": "192.168.1.92",
         "port": 9004,
         "enabled": True
     },
     {
         "name": "nest_2",
-        "ip": "127.0.0.1",
+        "ip": "192.168.1.92",
         "port": 9004,
         "enabled": False
     },
     {
         "name": "nest_3",
-        "ip": "127.0.0.1",
+        "ip": "192.168.1.92",
         "port": 9004,
         "enabled": False
     }
