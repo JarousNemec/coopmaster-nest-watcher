@@ -58,6 +58,9 @@ class NestSellDB:
 
         pass
 
+    def close(self):
+        self.session.close()
+
 
 if __name__ == '__main__':
     CoopMasterDBCreator(host="localhost", port=5432, database="coopmaster", user="coop_admin",
