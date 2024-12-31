@@ -1,6 +1,6 @@
 import json
 import logging
-
+import random
 from app import configuration
 
 
@@ -41,22 +41,21 @@ def ping(mqtt_client, nest_db):
 
 
 def check_nest_occupacity(mqtt_client, nest_db):
-
+    nests_list = []
+    broker = f"nests/status"
     for i in range(1, 7):
-        broker = f"nests/{i}/status"
-        state = {
-            "state": "on",
-            "attributes": {
-                "device_class": "occupancy"
-            }
-        }
-        payload = json.dumps(state)
-        result = mqtt_client.publish(broker, payload.encode())
-        status = result[0]
-        if status == 0:
-            logging.info("Occupancy reported successfully")
-        else:
-            logging.error(f"Occupancy reported with error {status}")
+        state = "occupied" if random.randint(1, 100) < 50 else "free"
+        nests_list.append({
+            "id": i,
+            "state": state
+        })
+    payload = json.dumps({"nests_list":nests_list})
+    result = mqtt_client.publish(broker, payload.encode())
+    status = result[0]
+    if status == 0:
+        logging.info("Occupancy reported successfully")
+    else:
+        logging.error(f"Occupancy reported with error {status}")
 
 
 def egg_checker(mqtt_client, nest_db):
