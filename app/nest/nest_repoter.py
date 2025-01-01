@@ -4,6 +4,7 @@ import random
 
 from app import configuration
 
+nest_count = 6
 
 def report_nest_data():
     mqtt_client = configuration.get_mqtt_client()
@@ -42,10 +43,10 @@ def ping(mqtt_client, nest_db):
 
 
 def check_nest_occupacity(mqtt_client, nest_db):
-    topic = f"nests/status"
+    topic = f"coopmaster/nests/status"
     states = ""
     separator = ';'
-    for i in range(0, 6):
+    for i in range(0, nest_count):
         state = "o" if random.randint(1, 100) < 50 else "f"
         if len(states) > 0:
             states = states + separator
@@ -60,18 +61,18 @@ def check_nest_occupacity(mqtt_client, nest_db):
 
 
 def egg_checker(mqtt_client, nest_db):
-    for i in range(1, 7):
-        broker = f"nests/{i}/egg"
-        state = {
-            "state": "on",
-            "attributes": {
-                "device_class": "occupancy"
-            }
-        }
-        payload = json.dumps(state)
-        result = mqtt_client.publish(broker, payload.encode())
-        status = result[0]
-        if status == 0:
-            logging.info("Eggs reported successfully")
-        else:
-            logging.error(f"Eggs reported with error {status}")
+    topic = f"coopmaster/eggs/count"
+    eggs = ""
+    separator = ';'
+    for i in range(0, nest_count):
+        count = str(random.randint(0, 5))
+        if len(eggs) > 0:
+            eggs = eggs + separator
+        eggs = eggs + str(count)
+
+    result = mqtt_client.publish(topic, eggs.encode())
+    status = result[0]
+    if status == 0:
+        logging.info("Eggs reported successfully")
+    else:
+        logging.error(f"Eggs reported with error {status}")
