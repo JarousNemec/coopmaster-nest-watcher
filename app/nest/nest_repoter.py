@@ -1,6 +1,7 @@
 import json
 import logging
 import random
+
 from app import configuration
 
 
@@ -41,16 +42,16 @@ def ping(mqtt_client, nest_db):
 
 
 def check_nest_occupacity(mqtt_client, nest_db):
-    nests_list = []
-    broker = f"nests/status"
-    for i in range(1, 7):
-        state = "occupied" if random.randint(1, 100) < 50 else "free"
-        nests_list.append({
-            "id": i,
-            "state": state
-        })
-    payload = json.dumps({"nests_list":nests_list})
-    result = mqtt_client.publish(broker, payload.encode())
+    topic = f"nests/status"
+    states = ""
+    separator = ';'
+    for i in range(0, 6):
+        state = "o" if random.randint(1, 100) < 50 else "f"
+        if len(states) > 0:
+            states = states + separator
+        states = states + str(state)
+
+    result = mqtt_client.publish(topic, states.encode())
     status = result[0]
     if status == 0:
         logging.info("Occupancy reported successfully")
