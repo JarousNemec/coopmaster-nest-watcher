@@ -9,5 +9,5 @@ def start_server():
 
 
 if __name__ == '__main__':
-    print("Starting nest Watcher ")
+    print("Starting nest watcher")
     start_server()

@@ -6,7 +6,6 @@ from waitress import serve
 
 from app import configuration
 from app.blueprints.admin_blueprint import admin_blueprint
-from app.blueprints.weight_blueprint import weight_blueprint
 from app.nest.nest_keeper import keep_all_nests
 from app.nest.nest_repoter import report_nest_data
 
@@ -20,7 +19,6 @@ def flask_app():
         logging.info(message)
         return message
 
-    app.register_blueprint(weight_blueprint)
     app.register_blueprint(admin_blueprint)
     return app
 
