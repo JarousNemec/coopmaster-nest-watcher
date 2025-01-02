@@ -17,11 +17,29 @@ def report_nest_data():
         return
 
     try:
+        ping(mqtt_client, nest_db)
         check_nest_occupacity(mqtt_client, nest_db)
         egg_checker(mqtt_client, nest_db)
     finally:
         nest_db.close()
         mqtt_client.close()
+
+
+def ping(mqtt_client, nest_db):
+    count = nest_db.get_nest_record_count()
+
+    message = {"count": count}
+    payload = json.dumps(message)
+
+    result = mqtt_client.publish(configuration.config.MQTT_TOPIC, payload.encode())
+
+    logging.info(f"Going to publish following payload to {configuration.config.MQTT_TOPIC}: {payload.encode()}")
+    # Check if the message was successfully published
+    status = result[0]
+    if status == 0:
+        logging.info("Nest status reported successfully")
+    else:
+        logging.error(f"Nest status reported with error {status}")
 
 
 def check_nest_occupacity(mqtt_client, nest_db):

@@ -31,7 +31,7 @@ class AppConfig:
 
     MQTT_BROKER: str = "192.168.1.177"
     MQTT_PORT: int = 1883
-    MQTT_TOPIC: str = "/nest_watcher/count"
+    MQTT_TOPIC: str = "coopmaster/database/row_count"
     MQTT_NEST_STATUS_TOPIC: str = "coopmaster/nests/status"
     MQTT_EGG_COUNT_TOPIC: str = "coopmaster/eggs/count"
     REPORT_INTERVAL: int = 5
