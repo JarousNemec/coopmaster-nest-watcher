@@ -8,3 +8,5 @@ python-dotenv
 SQLAlchemy~=2.0.28
 APScheduler~=3.11.0
 paho-mqtt~=2.1.0
+matplotlib~=3.10.0
+numpy~=2.2.1

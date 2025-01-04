@@ -4,7 +4,7 @@
 ## funkcionalita
 - komponenta ziskava informace o stavu jednotlivych hnizd, 
 - data uklada do relacni databaze
-- v pravidelnych intervalech informuje obsluhu o stavu snuzky
+- v pravidelnych intervalech informuje obsluhu o stavu snuzky pomoci MQTT clienta
 
 ## algoritmus
 - system predpoklada nasledujici scenar 
@@ -31,6 +31,7 @@ Nasledne je schopen z casove ready detekovat nasledujici data
 - python
 - postgress databaze
 - Docker
+- MQTT client
 
 ## hardware
 - rabspery 
