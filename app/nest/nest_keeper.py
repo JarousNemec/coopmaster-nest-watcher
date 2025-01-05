@@ -49,7 +49,7 @@ def keep_all_nests():
                     logging.error(f'Failed to retrieve data: {response.status_code}')
 
             except requests.exceptions.RequestException as e:
-                logging.error(f'An error occurred: {e}')
+                logging.error(f'Can not connect to nest driver application {url}')
 
         logging.info("All nests checked.")
     finally:

@@ -22,8 +22,27 @@ class NestSellDB:
             self.engine = engine
             session = sessionmaker(bind=engine)
             self.session = session()
+            engine.connect().execute("SELECT 1")
         except Exception as e:
             logging.error(f"Error when creating SellDB class {e}")
+
+
+    # def is_database_connected(self):
+    #     try:
+    #         # Attempt to connect to the database
+    #         with self.session.connect() as connection:
+    #             # Optionally, you can execute a simple test query
+    #             connection.execute("SELECT 1")
+    #
+    #         # If we get here, the connection was successful
+    #         return True
+    #     except OperationalError as e:
+    #         # Handle the exception if the database is not connected
+    #         print(f"Database connection failed: {e}")
+    #         return False
+
+    # is_connected = is_database_connected()
+    # print("Database is connected:", is_connected)
 
     def get_schema_version(self):
         try:
@@ -57,7 +76,7 @@ class NestSellDB:
             pass
 
         except Exception as e:
-            logging.error(f"Could not parse schema version: {e}")
+            logging.error(f"Could not insert nest record into database: {e}")
 
         pass
 
