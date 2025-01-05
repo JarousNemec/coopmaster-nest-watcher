@@ -19,10 +19,11 @@ class NestDB:
         try:
             conn_string = f'postgresql+psycopg://{user}:{password}@{host}:{port}/{database}'
             engine = create_engine(conn_string)
+            self.connection = engine.connect()
+            self.connection.close()
             self.engine = engine
             session = sessionmaker(bind=engine)
             self.session = session()
-            engine.connect().execute("SELECT 1")
             self.connected = True
         except Exception as e:
             logging.error(f"Error when creating NestDB class. Check if DB is running {host}:{port}")

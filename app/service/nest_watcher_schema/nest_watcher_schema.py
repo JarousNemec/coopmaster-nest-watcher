@@ -36,7 +36,6 @@ def create_nest_watcher_db_schema(engine, db_session):
     with db_session as conn:
         conn.execute(text("DROP SCHEMA public CASCADE;"))
         conn.execute(text("CREATE SCHEMA public;"))
-        conn.execute(text("DROP ROLE rds;"))
         conn.commit()
 
     FajneBase.metadata.create_all(db_session.bind)
