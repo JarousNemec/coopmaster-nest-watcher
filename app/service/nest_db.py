@@ -25,7 +25,7 @@ class NestDB:
             engine.connect().execute("SELECT 1")
             self.connected = True
         except Exception as e:
-            logging.error(f"Error when creating SellDB class. Check if DB is running {host}:{port}")
+            logging.error(f"Error when creating NestDB class. Check if DB is running {host}:{port}")
             self.connected = False
 
 
