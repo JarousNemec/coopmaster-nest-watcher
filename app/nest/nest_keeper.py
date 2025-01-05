@@ -21,6 +21,9 @@ def parse_values(input_str):
 
 def keep_all_nests():
     nest_db = configuration.get_nest_db()
+    if not nest_db.connected:
+        logging.error('Could not connect to Nest database.')
+        return
     try:
         for nest in NEST_TO_KEEP:
             name = nest["name"]

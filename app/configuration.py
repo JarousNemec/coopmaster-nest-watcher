@@ -3,7 +3,7 @@ from typing import Union, get_type_hints
 
 from flask.cli import load_dotenv
 from app.mqqt_client import NestMQTTClient
-from app.service.nest_db import NestSellDB
+from app.service.nest_db import NestDB
 
 log_file_name = "nest_watcher.log"
 
@@ -114,7 +114,7 @@ def get_mqtt_client():
 
 
 def get_nest_db():
-    return NestSellDB(
+    return NestDB(
         host=config.DB_HOST,
         port=config.DB_PORT,
         database=config.POSTGRES_DB,

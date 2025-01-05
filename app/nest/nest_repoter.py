@@ -6,10 +6,13 @@ from app import configuration
 
 nest_count = 6
 
+
 def report_nest_data():
     mqtt_client = configuration.get_mqtt_client()
     nest_db = configuration.get_nest_db()
     try:
+        if not nest_db.connected:
+            raise ConnectionError("Could not connect to nest database")
         mqtt_client.connect()
     except:
         logging.error(

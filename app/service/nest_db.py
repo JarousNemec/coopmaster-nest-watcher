@@ -13,7 +13,7 @@ from app.service.nest_watcher_schema.nest_record import NestRecord, map_nestInfo
 from app.service.nest_watcher_schema.nest_watcher_schema_creator import CoopMasterDBCreator
 
 
-class NestSellDB:
+class NestDB:
 
     def __init__(self, host, port, database, user, password):
         try:
@@ -23,26 +23,13 @@ class NestSellDB:
             session = sessionmaker(bind=engine)
             self.session = session()
             engine.connect().execute("SELECT 1")
+            self.connected = True
         except Exception as e:
-            logging.error(f"Error when creating SellDB class {e}")
+            logging.error(f"Error when creating SellDB class. Check if DB is running {host}:{port}")
+            self.connected = False
 
 
-    # def is_database_connected(self):
-    #     try:
-    #         # Attempt to connect to the database
-    #         with self.session.connect() as connection:
-    #             # Optionally, you can execute a simple test query
-    #             connection.execute("SELECT 1")
-    #
-    #         # If we get here, the connection was successful
-    #         return True
-    #     except OperationalError as e:
-    #         # Handle the exception if the database is not connected
-    #         print(f"Database connection failed: {e}")
-    #         return False
 
-    # is_connected = is_database_connected()
-    # print("Database is connected:", is_connected)
 
     def get_schema_version(self):
         try:
@@ -83,52 +70,53 @@ class NestSellDB:
     def close(self):
         self.session.close()
 
-    def get_todays_records_per_nest(self, nest):
-
-        current_time = datetime.now()
-        days_ms = datetime.combine(date.today(), datetime.min.time())
-        days_ms = datetime(2025, 1, 2, 0, 0, 0)
-        condition = (NestRecord.timestamp >= days_ms)
-
-        try:
-            count = self.session.query(NestRecord).filter(condition).filter(NestRecord.nest_id == nest).all()
-            return count
-        except Exception as e:
-            logging.error(f"Could not get records count: {e}")
-            return "Could not get records count"
-
-
-if __name__ == '__main__':
-    matplotlib.use('TkAgg', force=True)
-
-    #    CoopMasterDBCreator(host="localhost", port=5432, database="coopmaster", user="coop_admin",
-    #                        password="your_secure_password")
-
-    db = NestSellDB(host="localhost", port=5432, database="coopmaster", user="coop_admin",
-                    password="your_secure_password")
-    a = db.get_nest_record_count()
-
-    nests = configuration.construct_nests_from_env()
-
-
-    # todo: fixnout datetime.now pri tvorbe recordu protoze je to o hodinu pozde
-    # todo:
-
-
-
-    for nest in nests:
-        count = db.get_todays_records_per_nest(nest["name"])
-        weights = []
-        for item in count:
-            weights.append(item.weight)
-
-        plt.plot(weights)
-
-        # Label axes and provide a title
-        plt.xlabel('Index')
-        plt.ylabel('Hmotnost')
-        plt.title(nest)
-
-        # Display the plot
-        plt.show()
-    aa = 0
+#     def get_todays_records_per_nest(self, nest):
+#
+#         current_time = datetime.now()
+#         days_ms = datetime.combine(date.today(), datetime.min.time())
+#         days_ms = datetime(2025, 1, 2, 0, 0, 0)
+#         condition = (NestRecord.timestamp >= days_ms)
+#
+#         try:
+#             count = self.session.query(NestRecord).filter(condition).filter(NestRecord.nest_id == nest).all()
+#             return count
+#         except Exception as e:
+#             logging.error(f"Could not get records count: {e}")
+#             return "Could not get records count"
+#
+#
+# if __name__ == '__main__':
+#     matplotlib.use('TkAgg', force=True)
+#
+#     #    CoopMasterDBCreator(host="localhost", port=5432, database="coopmaster", user="coop_admin",
+#     #                        password="your_secure_password")
+#
+#     db = NestDB(host="localhost", port=5432, database="coopmaster", user="coop_admin",
+#                 password="your_secure_password")
+#
+#     a = db.get_nest_record_count()
+#
+#     nests = configuration.construct_nests_from_env()
+#
+#
+#     # todo: fixnout datetime.now pri tvorbe recordu protoze je to o hodinu pozde
+#     # todo:
+#
+#
+#
+#     for nest in nests:
+#         count = db.get_todays_records_per_nest(nest["name"])
+#         weights = []
+#         for item in count:
+#             weights.append(item.weight)
+#
+#         plt.plot(weights)
+#
+#         # Label axes and provide a title
+#         plt.xlabel('Index')
+#         plt.ylabel('Hmotnost')
+#         plt.title(nest)
+#
+#         # Display the plot
+#         plt.show()
+#     aa = 0
