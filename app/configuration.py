@@ -18,6 +18,9 @@ class AppConfigError(Exception):
 
 
 class AppConfig:
+    CHICKEN_MASS_MIN: int = 1200
+    EGG_MASS_MIN: int = 45
+
     PORT: int = 10000
     HOST: str = "127.0.0.1"
     INSTALLATION_DIRECTORY: str = "/bizstorecard"
@@ -81,6 +84,7 @@ config = AppConfig(os.environ)
 def construct_nests_from_env():
     nests = []
     # Iterate through environment variables to collect nest data
+    # for i in range(1, 7):  # Assuming you have six nests todo: set back to six nets
     for i in range(1, 7):  # Assuming you have six nests
         name = f"NEST_{i}"
         ip = os.getenv(f"{name}_IP")
@@ -111,6 +115,12 @@ def get_mqtt_client():
         config.MQTT_PORT,
         config.MQTT_TOPIC
     )
+
+def get_chicken_mass():
+    return config.CHICKEN_MASS_MIN
+
+def get_egg_mass():
+    return config.EGG_MASS_MIN
 
 
 def get_nest_db():

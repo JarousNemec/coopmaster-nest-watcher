@@ -4,7 +4,7 @@ import random
 
 from app import configuration
 
-nest_count = 6
+NESTS_TO_KEEP = configuration.construct_nests_from_env()
 
 
 def report_nest_data():
@@ -31,7 +31,7 @@ def report_nest_data():
 def ping(mqtt_client, nest_db):
     count = nest_db.get_nest_record_count()
 
-    message = {"count": count}
+    message = {"records_sum": count}
     payload = json.dumps(message)
 
     result = mqtt_client.publish(configuration.config.MQTT_TOPIC, payload.encode())
@@ -48,8 +48,8 @@ def ping(mqtt_client, nest_db):
 def check_nest_occupacity(mqtt_client, nest_db):
     states = ""
     separator = ';'
-    for i in range(0, nest_count):
-        state = "o" if random.randint(1, 100) < 50 else "f"
+    for nest in NESTS_TO_KEEP:
+        state = "o" if nest_db.get_avarage_weight_for_last_minute(nest["name"]) > configuration.get_chicken_mass() else "f"
         if len(states) > 0:
             states = states + separator
         states = states + str(state)
@@ -65,8 +65,9 @@ def check_nest_occupacity(mqtt_client, nest_db):
 def egg_checker(mqtt_client, nest_db):
     eggs = ""
     separator = ';'
-    for i in range(0, nest_count):
-        count = str(random.randint(0, 5))
+    for nest in NESTS_TO_KEEP:
+        avg_weight = nest_db.get_avarage_weight_for_last_minute(nest["name"])
+        count = int(avg_weight/configuration.get_egg_mass()) if avg_weight < configuration.get_chicken_mass() else 0
         if len(eggs) > 0:
             eggs = eggs + separator
         eggs = eggs + str(count)

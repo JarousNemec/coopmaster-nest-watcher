@@ -5,18 +5,19 @@ import logging
 
 from app import configuration
 
-NEST_TO_KEEP = configuration.construct_nests_from_env()
+NESTS_TO_KEEP = configuration.construct_nests_from_env()
 
 
 def parse_values(input_str):
     # Split the string by ';' and get the first part
     parts = input_str.split(';')
     time_part = parts[0]
+
+    # weight comes in grams
     weight_part = parts[1]
 
-    weight_float = float(weight_part) * 1000
-
-    return time_part, int(weight_float)
+    weight = abs(int(float(weight_part)))
+    return time_part, weight
 
 
 def keep_all_nests():
@@ -25,7 +26,7 @@ def keep_all_nests():
         logging.error('Could not connect to Nest database.')
         return
     try:
-        for nest in NEST_TO_KEEP:
+        for nest in NESTS_TO_KEEP:
             name = nest["name"]
             ip = nest["ip"]
             port = nest["port"]
@@ -36,6 +37,7 @@ def keep_all_nests():
                 nest_db.insert_nest_record(nest_id=name, weight=-1)
                 continue
 
+            # each scale endpoint is identified by port of the endpoint
             url = f'http://{ip}:{port}/api/weight'
             try:
                 response = requests.get(url, timeout=0.5)

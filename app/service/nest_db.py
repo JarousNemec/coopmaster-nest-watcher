@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, date
 import matplotlib
 import numpy as np
 import matplotlib.pyplot as plt
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
 
 from app import configuration
@@ -28,9 +28,6 @@ class NestDB:
         except Exception as e:
             logging.error(f"Error when creating NestDB class. Check if DB is running {host}:{port}")
             self.connected = False
-
-
-
 
     def get_schema_version(self):
         try:
@@ -67,6 +64,23 @@ class NestDB:
             logging.error(f"Could not insert nest record into database: {e}")
 
         pass
+
+    def get_avarage_weight_for_last_minute(self, nest_id):
+        try:
+            latest_record = self.session.query(NestRecord.timestamp).filter(NestRecord.nest_id == nest_id).order_by(NestRecord.timestamp.desc()).first()
+            if latest_record:
+                latest_time = latest_record.timestamp
+
+                # Calculate the interval starting point
+                interval_start = latest_time - timedelta(minutes=1)
+
+                # Query to calculate the average weight in the last one minute interval
+                average_weight = self.session.query(func.avg(NestRecord.weight)).filter(NestRecord.timestamp > interval_start, NestRecord.timestamp <= latest_time, NestRecord.nest_id == nest_id).scalar()
+                return int(average_weight)
+        except Exception as e:
+            logging.error(f"Cannot get average weight for nest id: {nest_id}")
+            return 0
+
 
     def close(self):
         self.session.close()
@@ -121,3 +135,7 @@ class NestDB:
 #         # Display the plot
 #         plt.show()
 #     aa = 0
+
+if __name__ == "__main__":
+    a = configuration.config
+    configuration.get_nest_db().get_avarage_weight_for_last_minute("nest_1")
