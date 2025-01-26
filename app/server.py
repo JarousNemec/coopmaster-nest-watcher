@@ -27,8 +27,8 @@ def server():
     manager_app = flask_app()
 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(report_nest_data, 'interval', seconds=configuration.config.REPORT_INTERVAL)
-    scheduler.add_job(keep_all_nests, 'interval', seconds=configuration.config.REPORT_INTERVAL)
+    scheduler.add_job(report_nest_data, 'interval', seconds=configuration.config.REPORT_INTERVAL, max_instances=1)
+    scheduler.add_job(keep_all_nests, 'interval', seconds=configuration.config.REPORT_INTERVAL, max_instances=1)
     scheduler.start()
 
     port = configuration.config.PORT
