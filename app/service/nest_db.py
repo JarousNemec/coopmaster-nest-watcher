@@ -85,57 +85,6 @@ class NestDB:
     def close(self):
         self.session.close()
 
-#     def get_todays_records_per_nest(self, nest):
-#
-#         current_time = datetime.now()
-#         days_ms = datetime.combine(date.today(), datetime.min.time())
-#         days_ms = datetime(2025, 1, 2, 0, 0, 0)
-#         condition = (NestRecord.timestamp >= days_ms)
-#
-#         try:
-#             count = self.session.query(NestRecord).filter(condition).filter(NestRecord.nest_id == nest).all()
-#             return count
-#         except Exception as e:
-#             logging.error(f"Could not get records count: {e}")
-#             return "Could not get records count"
-#
-#
-# if __name__ == '__main__':
-#     matplotlib.use('TkAgg', force=True)
-#
-#     #    CoopMasterDBCreator(host="localhost", port=5432, database="coopmaster", user="coop_admin",
-#     #                        password="your_secure_password")
-#
-#     db = NestDB(host="localhost", port=5432, database="coopmaster", user="coop_admin",
-#                 password="your_secure_password")
-#
-#     a = db.get_nest_record_count()
-#
-#     nests = configuration.construct_nests_from_env()
-#
-#
-#     # todo: fixnout datetime.now pri tvorbe recordu protoze je to o hodinu pozde
-#     # todo:
-#
-#
-#
-#     for nest in nests:
-#         count = db.get_todays_records_per_nest(nest["name"])
-#         weights = []
-#         for item in count:
-#             weights.append(item.weight)
-#
-#         plt.plot(weights)
-#
-#         # Label axes and provide a title
-#         plt.xlabel('Index')
-#         plt.ylabel('Hmotnost')
-#         plt.title(nest)
-#
-#         # Display the plot
-#         plt.show()
-#     aa = 0
-
 if __name__ == "__main__":
     a = configuration.config
     configuration.get_nest_db().get_avarage_weight_for_last_minute("nest_1")
