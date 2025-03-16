@@ -8,7 +8,6 @@ from sqlalchemy import text
 from app.service.common_schema.database import FajneBase
 from app.service.nest_watcher_schema.information_schema import InformationSchema
 from app.service.nest_watcher_schema.nest_record import NestRecord
-from app.service.nest_watcher_schema.sell import Sell
 
 
 def create_information_schema_table(engine, db_session):
